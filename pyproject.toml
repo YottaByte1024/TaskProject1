@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "taskproject"
+version = "0.1.0"
+description = ""
+authors = ["1024_YottaByte <kirill1999z@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.1.1"
+djangorestframework = "^3.14.0"
+PyYAML = "^6.0"
+django-rest-swagger = "^2.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
