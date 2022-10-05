@@ -13,6 +13,9 @@ import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from uuid import uuid1
+from warnings import warn
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -20,10 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-opa(zm^*h%4_ge+$oz$dd#^a#dmo2n57=)e3xn+3to59m-_^se'
+#SECRET_KEY = 'django-insecure-opa(zm^*h%4_ge+$oz$dd#^a#dmo2n57=)e3xn+3to59m-_^se'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# Def or generating of the secret key
+if os.getenv('SECRET_KEY'):
+    SECRET_KEY = os.getenv('SECRET_KEY')
+elif DEBUG:
+    SECRET_KEY = 'django-secret-key'
+else:
+    SECRET_KEY = str(uuid1())
+    warn('Using random SECRET_KEY. '
+         'Should configure it for production.')
+
 
 ALLOWED_HOSTS = []
 
