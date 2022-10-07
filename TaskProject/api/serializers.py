@@ -40,3 +40,11 @@ class DepWithEmployeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dep
         fields = ['id', 'name', 'id_head', 'isWorking', 'dep_new']
+
+
+class EmployeeWithCurrentDepSerializer(serializers.ModelSerializer):
+    dep_current = serializers.CharField()
+
+    class Meta:
+        model = Employee
+        fields = ['id', 'dep_current']

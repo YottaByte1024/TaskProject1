@@ -1,7 +1,8 @@
 # from django.shortcuts import render
 from rest_framework import viewsets
 
-from .serializers import EmployeeSerializer, DepSerializer, EmployeeWithDepSerializer, DepWithEmployeeSerializer
+from .serializers import EmployeeSerializer, DepSerializer, EmployeeWithDepSerializer, DepWithEmployeeSerializer, \
+    EmployeeWithCurrentDepSerializer
 from .models import Employee, Dep
 
 
@@ -26,3 +27,8 @@ class EmployeeWithDepViewSet(viewsets.ReadOnlyModelViewSet):
 class DepWithEmployeeViewSet(viewsets.ModelViewSet):
     queryset = Dep.objects.all()
     serializer_class = DepWithEmployeeSerializer
+
+
+class EmployeeWithCurrentDepViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeWithCurrentDepSerializer

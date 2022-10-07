@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+
 
 
 # Create your models here.
@@ -15,6 +15,20 @@ class Employee(models.Model):
     date_transfer = models.DateTimeField(null=True, blank=True)
     date_create = models.DateTimeField(auto_now_add=True)
     date_change = models.DateTimeField(auto_now=True)
+
+    @property
+    def dep_current(self):
+        from django.utils import timezone
+        now = timezone.now()
+
+        if self.date_transfer is None:
+            current_dep = self.id_dep_new_id
+        elif self.date_transfer <= now:
+            current_dep = self.id_dep_new_id
+        else:
+            current_dep = self.id_dep_old_id
+
+        return current_dep
 
     def __str__(self):
         return "%s %s" % (self.lastname, self.firstname)
