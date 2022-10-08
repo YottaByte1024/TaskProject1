@@ -11,6 +11,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+
 class DepSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dep
@@ -35,11 +36,22 @@ class EmployeeWithDepSerializer(serializers.ModelSerializer):
                   'date_transfer']
 
 
+class EmployeeIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ['id']
+
+
 class DepWithEmployeeSerializer(serializers.ModelSerializer):
-    # dep_current = serializers.ListField()
+    employees_current = EmployeeIdSerializer(many=True)
+    # employees_current = serializers.ListField()
+
     class Meta:
         model = Dep
-        fields = ['id', 'name', 'id_head', 'isWorking', 'dep_new']
+        fields = ['id', 'name', 'id_head', 'isWorking',
+                  'dep_new',
+                  'employees_current'
+                  ]
 
 
 class EmployeeWithCurrentDepSerializer(serializers.ModelSerializer):

@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 # Create your models here.
 
 class Employee(models.Model):
@@ -42,6 +41,10 @@ class Dep(models.Model):
     isWorking = models.BooleanField(default=True)
     date_create = models.DateTimeField(auto_now_add=True)
     date_change = models.DateTimeField(auto_now=True)
+
+    @property
+    def employees_current(self):
+        return self.dep_new.filter()
 
     def __str__(self):
         return "%s %s" % (self.name, self.isWorking)

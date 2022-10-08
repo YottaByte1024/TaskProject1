@@ -24,7 +24,7 @@ class EmployeeWithDepViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = EmployeeWithDepSerializer
 
 
-class DepWithEmployeeViewSet(viewsets.ModelViewSet):
+class DepWithEmployeeViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Dep.objects.all()
     serializer_class = DepWithEmployeeSerializer
 
