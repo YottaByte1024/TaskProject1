@@ -7,12 +7,8 @@ router.register(r'employees',
                 views.EmployeeViewSet, basename="employee")
 router.register(r'deps',
                 views.DepViewSet, basename="dep")
-router.register(r'employees-with-deps',
-                views.EmployeeWithDepViewSet, basename="employee-with-dep")
-router.register(r'deps-with-employees',
-                views.DepWithEmployeeViewSet, basename="dep-with-employee")
-router.register(r'employees-with-current-deps',
-                views.EmployeeWithCurrentDepViewSet, basename="employee-with-current-dep")
+router.register(r'transfers',
+                views.TransferViewSet, basename="transfer")
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

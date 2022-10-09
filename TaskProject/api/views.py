@@ -1,9 +1,8 @@
 # from django.shortcuts import render
 from rest_framework import viewsets
 
-from .serializers import EmployeeSerializer, DepSerializer, EmployeeWithDepSerializer, DepWithEmployeeSerializer, \
-    EmployeeWithCurrentDepSerializer
-from .models import Employee, Dep
+from .serializers import EmployeeSerializer, DepSerializer, TransferSerializer
+from .models import Employee, Dep, Transfer
 
 
 # Create your views here.
@@ -15,20 +14,10 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
 
 class DepViewSet(viewsets.ModelViewSet):
-    queryset = Dep.objects.all().order_by('id')
+    queryset = Dep.objects.all().order_by('code')
     serializer_class = DepSerializer
 
 
-class EmployeeWithDepViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeWithDepSerializer
-
-
-class DepWithEmployeeViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Dep.objects.all()
-    serializer_class = DepWithEmployeeSerializer
-
-
-class EmployeeWithCurrentDepViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeWithCurrentDepSerializer
+class TransferViewSet(viewsets.ModelViewSet):
+    queryset = Transfer.objects.all().order_by('date_transfer')
+    serializer_class = TransferSerializer
