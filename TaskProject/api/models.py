@@ -14,18 +14,25 @@ class Employee(models.Model):
     def transfer_current(self):
         from django.utils import timezone
         now = timezone.now()
-        return self.transfers.filter(date_transfer__lte=now) \
-            .order_by('date_transfer').last().id
+        transfer = self.transfers.filter(date_transfer__lte=now) \
+            .order_by('date_transfer').last()
+        if transfer is None:
+            return None
+        return transfer.id
 
     @property
     def dep_current(self):
         from django.utils import timezone
         now = timezone.now()
-        return self.transfers.filter(date_transfer__lte=now) \
-            .order_by('date_transfer').last().dep.code
+        dep = self.transfers.filter(date_transfer__lte=now) \
+            .order_by('date_transfer').last()
+        if dep is None:
+            return None
+        return dep.dep.code
 
     def __str__(self):
-        return "%s %s" % (self.lastname, self.firstname)
+        return "%s %s %s from %s" % (self.lastname, self.firstname, self.patronymic,
+                                     self.dep_current)
 
     class Meta:
         verbose_name = 'employee'
@@ -43,7 +50,12 @@ class Dep(models.Model):
     date_change = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "%s %s" % (self.name, self.is_working)
+        match self.is_working:
+            case True:
+                w = 'is working'
+            case _:
+                w = 'is not working'
+        return "%s (%s) %s" % (self.name, self.code, w)
 
     class Meta:
         verbose_name = 'dep'
@@ -60,7 +72,11 @@ class Transfer(models.Model):
     date_change = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "%s is transferred to %s at %s" % (self.employee, self.dep.name, self.date_transfer)
+        from django.utils import timezone
+        tz = timezone.get_default_timezone()
+        return "%s is transferred to %s at %s" % (
+            self.employee, self.dep.name,
+            self.date_transfer.astimezone(tz).strftime('%d.%m.%Y %H:%M'))
 
     class Meta:
         verbose_name = 'transfer'
