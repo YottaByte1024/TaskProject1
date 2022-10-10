@@ -43,11 +43,31 @@ class Dep(models.Model):
     # id = models.CharField(max_length=10, primary_key=True)
     code = models.CharField(max_length=10, primary_key=True)
     name = models.CharField(max_length=128)
-    head = models.ForeignKey(Employee, related_name='managed_dep',
-                             null=True, blank=True, on_delete=models.SET_NULL)
+    # head = models.ForeignKey(Employee, related_name='managed_dep',
+    #                          null=True, blank=True, on_delete=models.SET_NULL)
     is_working = models.BooleanField(default=True)
     date_create = models.DateTimeField(auto_now_add=True)
     date_change = models.DateTimeField(auto_now=True)
+
+    @property
+    def appointment_current(self):
+        from django.utils import timezone
+        now = timezone.now()
+        appointment = self.appointments.filter(date_appointment__lte=now) \
+            .order_by('date_appointment').last()
+        if appointment is None:
+            return None
+        return appointment.id
+
+    @property
+    def head_current(self):
+        from django.utils import timezone
+        now = timezone.now()
+        head = self.appointments.filter(date_appointment__lte=now) \
+            .order_by('date_appointment').last()
+        if head is None:
+            return None
+        return head.id
 
     def __str__(self):
         match self.is_working:
@@ -81,3 +101,25 @@ class Transfer(models.Model):
     class Meta:
         verbose_name = 'transfer'
         verbose_name_plural = 'transfers'
+
+
+class Appointment(models.Model):
+    employee = models.ForeignKey(Employee, related_name='appointments',
+                                 null=True, blank=True, on_delete=models.SET_NULL)
+    dep = models.ForeignKey(Dep, related_name='appointments',
+                            null=True, blank=True, on_delete=models.SET_NULL)
+    date_appointment = models.DateTimeField()
+    date_create = models.DateTimeField(auto_now_add=True)
+    date_change = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        from django.utils import timezone
+        tz = timezone.get_default_timezone()
+        return "%s is appointed as head %s at %s" % (
+            self.employee, self.dep.name,
+            self.date_appointment.astimezone(tz).strftime('%d.%m.%Y %H:%M'))
+
+    class Meta:
+        verbose_name = 'appointment'
+        verbose_name_plural = 'appointments'
+        

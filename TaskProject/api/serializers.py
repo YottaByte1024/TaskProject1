@@ -2,7 +2,13 @@ from rest_framework import serializers
 
 # from rest_framework.fields import SerializerMethodField
 
-from .models import Employee, Dep, Transfer
+from .models import Employee, Dep, Transfer, Appointment
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = '__all__'
 
 
 class TransferSerializer(serializers.ModelSerializer):
@@ -22,6 +28,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
 
 class DepSerializer(serializers.ModelSerializer):
+    appointment_current = serializers.ReadOnlyField()
+    head_current = serializers.ReadOnlyField()
+
     class Meta:
         model = Dep
         fields = "__all__"

@@ -9,6 +9,8 @@ router.register(r'deps',
                 views.DepViewSet, basename="dep")
 router.register(r'transfers',
                 views.TransferViewSet, basename="transfer")
+router.register(r'appointments',
+                views.AppointmentViewSet, basename="appointment")
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
